@@ -1,5 +1,6 @@
 public class BST <K extends Comparable<K>, V>{
     private Node root;
+    private int size;
     private class Node{
         private K key;
         private V val;
@@ -10,6 +11,9 @@ public class BST <K extends Comparable<K>, V>{
         }
     }
 
+    public BST(){
+        size = 0;
+    }
 
 
     public void put(K key, V val){
@@ -31,6 +35,7 @@ public class BST <K extends Comparable<K>, V>{
         else{
             node.val = val;
         }
+        size++;
         return node;
     }
 
@@ -58,6 +63,7 @@ public class BST <K extends Comparable<K>, V>{
 
     public void delete(K key){
         root = delete(root, key);
+        size--;
     }
 
     public Node delete(Node node, K key){
@@ -89,8 +95,11 @@ public class BST <K extends Comparable<K>, V>{
         return node;
     }
 
+    public int size(){
+        return size;
+    }
 
-    public Iterable<K> iterator(){
-
+    public Iterable<K> iterator() {
+        
     }
 }
