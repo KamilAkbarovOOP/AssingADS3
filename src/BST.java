@@ -99,7 +99,19 @@ public class BST <K extends Comparable<K>, V>{
         return size;
     }
 
+    public void inOrder(Node root){
+        if(root == null) return;
+        inOrder(root.left);
+        System.out.println(root.val + " ");
+        inOrder(root.right);
+    }
+
     public Iterable<K> iterator() {
-        
+        Node node;
+        node = root;
+        while (node != null && node.left != null){
+            node = node.left;
+        }
+        return (Iterable<K>) node.val;
     }
 }

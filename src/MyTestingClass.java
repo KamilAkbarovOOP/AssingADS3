@@ -1,14 +1,13 @@
 class MyTestingClass{
-
-
     String name;
     MyTestingClass (String name){
         this.name = name;
     }
     public int hashCode(){
-        int hash = 31;
-        hash = hash * 31 + name.length();
-        hash = hash * 31 + name.hashCode();
+        int hash = 0;
+        for(int i = 0; i < name.length();i++){
+            hash = hash * 31 + name.charAt(i);
+        }
         return hash;
     }
 
