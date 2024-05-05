@@ -33,22 +33,24 @@ public class MyHashTable <K, V>{
     }
 
     private int hash(K key){
-        return key.hashCode() % M;
+        return (key.hashCode() & 0x7fffffff) % M;
     }
 
     public void put(K key, V value){
-        int hash = hash(key);
-        HashNode<K, V> newnode = new HashNode<>(key, value);
+        HashNode<K, V> node = (HashNode<K, V>) get(key);
+        if(node != null){
+            node.value = value;
+            return;
+        }
 
-        if(chainArray[hash] == null){
-            chainArray[hash] = newnode;
+        int index = hash(key);
+        HashNode<K, V> newnode = new HashNode<>(key, value);
+        if(chainArray[index] == null){
+            chainArray[index] = newnode;
         }
         else{
-            HashNode<K, V> current = chainArray[hash];
-            while(current.next != null){
-                current = current.next;
-            }
-            current.next = newnode;
+            newnode.next = chainArray[index];
+            chainArray[index] = newnode;
         }
         size++;
     }
