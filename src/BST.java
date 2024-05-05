@@ -1,9 +1,9 @@
 public class BST <K extends Comparable<K>, V>{
     private Node root;
-    private int size;
     private class Node{
         private K key;
         private V val;
+        private int size;
         private Node left, right;
         public Node (K key, V val){
             this.key = key;
@@ -11,95 +11,95 @@ public class BST <K extends Comparable<K>, V>{
         }
     }
 
-    public BST(){
-        size = 0;
+
+    public void put (K key, V val){
+        Node newnode = new Node(key, val);
+        if(root == null){
+            root = newnode;
+            root.size++;
+            return;
+        }
+        Node current = root;
+        while (true){
+            if(((Comparable) val).compareTo(current.val) < 0){
+                if (current.left == null){
+                    current.left = newnode;
+                    root.size++;
+                    return;
+                }
+                current = current.left;
+            }
+            else if (((Comparable) key).compareTo(current.key) > 0) {
+                if (current.right == null){
+                    current.right = newnode;
+                    root.size++;
+                    return;
+                }
+                current = current.right;
+            }
+            else {
+                return;
+            }
+        }
     }
-
-
-    public void put(K key, V val){
-        root = put(root, key, val);
-    }
-
-    private Node put(Node node, K key, V val){
-        if (node == null){
-            return new Node (key, val);
-        }
-
-        int c = key.compareTo(node.key);
-        if(c < 0){
-            node.left = put(node.left, key, val);
-        }
-        else if(c > 0){
-            node.right = put(node.right, key, val);;
-        }
-        else{
-            node.val = val;
-        }
-        size++;
-        return node;
-    }
-
-
-
 
     public V get(K key){
-        Node node = root;
-        while(node != null){
-            int c = key.compareTo(node.key);
-            if(c < 0){
-                node = node.left;
+        Node current = root;
+        while (current != null){
+            if(((Comparable) key).compareTo(current.key) < 0){
+                current = current.left;
             }
-            else if(c > 0){
-                node = node.right;
+            else if (((Comparable) key).compareTo(current.key) > 0){
+                current = current.right;
             }
-            else{
-                return node.val;
+            else {
+                return current.val;
             }
         }
         return null;
     }
 
-
-
-    public void delete(K key){
-        root = delete(root, key);
-        size--;
-    }
-
-    public Node delete(Node node, K key){
-        if (node == null){
-            return null;
+    public void delete(K key) {
+        Node current = root;
+        if (root == null) {
+            return;
         }
-
-        int c = key.compareTo(node.key);
-        if(c < 0){
-            node.left = delete(node.left, key);
-        }
-        else if(c > 0){
-            node.right = delete(node.right, key);;
-        }
-        else{
-            Node temp = node;
-            node = node.right;
-            while(node.left != null){
-                node = node.left;
+        while (true) {
+            if (((Comparable) key).compareTo(current.key) < 0) {
+                current = current.left;
+            } else if (((Comparable) key).compareTo(current.key) > 0) {
+                current = current.right;
+            } else {
+                current = null;
+                root.size--;
             }
-            node.right = deleteM(temp.right);
-            node.left = temp.left;
+
         }
-        return node;
-    }
-    private Node deleteM(Node node){
-        if (node.left == null) return node.right;
-        node.left = deleteM(node.left);
-        return node;
     }
 
     public int size(){
-        return size;
+        return root.size;
+    }
+    public void inOrder(Node root){
+        Node temp = root;
+        while (root != null){
+            System.out.print(root.val + " ");
+            root = root.left;
+        }
+        root = temp;
+        System.out.println();
+        while (root != null){
+            System.out.print(root.val + " ");
+            root = root.right;
+        }
     }
 
     public Iterable<K> iterator() {
-        
+        Node node;
+        node = root;
+        while (node != null && node.left != null){
+            node = node.left;
+        }
+        return (Iterable<K>) node.val;
     }
 }
